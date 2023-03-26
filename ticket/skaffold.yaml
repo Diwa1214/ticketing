@@ -1,0 +1,15 @@
+apiVersion: skaffold/v4beta2
+kind: Config
+metadata:
+  name: ticket
+build:
+  local:
+    push: false
+  artifacts:
+  - image: diwa1214/dev
+    context: ../ticket
+    docker:
+      dockerfile: Dockerfile
+manifests:
+  rawYaml:
+   - ./infra/k83/*

@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment 
+metadata:
+  name: client-deply
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+       app: client
+  template:
+    metadata:
+      labels:
+       app: client
+    spec:
+      containers:
+        - name: client-container
+          image: "diwa1214/dev:client"
+          env:
+          - name: JWTAUTH
+            valueFrom:
+              secretKeyRef:
+                name: jwt-secret
+                key: jwt
+---
+apiVersion: v1
+kind: Service 
+metadata: 
+  name:  clientservice
+spec:
+  selector:
+    app: client
+  ports:
+    - name: client-port
+      port: 8000
+      targetPort: 8000
+
+
+
+    

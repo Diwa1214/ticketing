@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment 
+metadata:
+  name: nats-streaming-deply
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      type: nats-streaming
+  template:
+    metadata:
+      labels:
+        type: nats-streaming
+    spec:
+      containers:
+        - name: nats-streaming-container
+          image: nats-streaming:0.17.0
+          args: [
+             '-p',
+             '4222',
+             '-m',
+             '8222',
+             '-hbi',
+             '5s',
+             '-hbt',
+             '5s',
+             '-hbf',
+             '2',
+             '-SD',
+             '-cid',
+             'ticketing'
+          ]
+---
+apiVersion: v1
+kind: Service 
+metadata:
+  name:  nats-streaming-service
+spec:
+  selector:
+    type: nats-streaming
+  ports:
+    - name: client
+      port: 4222
+      protocol: TCP
+      targetPort: 4222
+
+    - name: monitoring
+      port: 8222
+      protocol: TCP
+      targetPort: 8222

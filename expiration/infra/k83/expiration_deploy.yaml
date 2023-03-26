@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment 
+metadata:
+  name: expiration-deploy
+spec:
+  replicas: 1
+  selector:
+     matchLabels:
+       app: expiration-app
+  template:
+     metadata:
+       labels:
+         app: expiration-app
+     spec:
+       containers:
+         - name: expiration-app-container
+           image: diwa1214/dev:expirationimage
+           env:
+            - name:  REDIS_HOST
+              value: 'expiration-redis-service'
+          
+            - name:  CLUSTER_ID
+              value: 'ticketing' 
+
+            - name:  NATS_URL
+              value: 'https://nats-streaming-service:4222'
+
+            - name:  CLIENT_ID
+              valueFrom:
+               fieldRef:
+                 fieldPath: metadata.name
+
+
+

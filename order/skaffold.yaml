@@ -1,0 +1,17 @@
+apiVersion: skaffold/v4beta2
+kind: Config 
+metadata:
+  name:  order
+
+build:
+  local:
+    push: false 
+  artifacts:
+    - image: diwa1214/dev
+      context: ../order
+      docker: 
+        dockerfile: Dockerfile
+
+manifests:
+  rawYaml:
+    - ./infra/k8s/*

@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: order-deply
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: order-deployment
+  template:
+    metadata:
+      labels:
+        app: order-deployment
+    spec:
+     containers:
+       - name: ordercontainer
+         image: diwa1214/dev:orderimage
+         env:
+           - name: MONGO_URI
+             value: 'mongodb://order-db-service/order'
+
+           - name:  CLUSTER_ID
+             value: 'ticketing'
+
+           - name:  NATS_URL
+             value: 'https://nats-streaming-service:4222'
+            
+           - name:  CLIENT_ID
+             valueFrom:
+               fieldRef:
+                 fieldPath: metadata.name
+
+           - name: JWTAUTH
+             valueFrom:
+               secretKeyRef:
+                 name: jwt-secret
+                 key: jwt
+---
+
+apiVersion: v1
+kind: Service 
+metadata:
+  name:  order-service
+spec:
+  selector:
+     app: order-deployment
+  ports:
+  - name:  order-port
+    port:  4000
+    targetPort: 4000
+    protocol: TCP

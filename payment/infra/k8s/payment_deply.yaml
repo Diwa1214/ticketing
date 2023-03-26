@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payment-deply
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: payment-deployment
+  template:
+    metadata:
+      labels:
+        app: payment-deployment
+    spec:
+     containers:
+       - name: paymentcontainer
+         image: diwa1214/dev:paymentimage
+         env:
+           - name: MONGO_URI
+             value: 'mongodb://payment-db-service/payment'
+
+           - name:  CLUSTER_ID
+             value: 'ticketing'
+
+           - name:  NATS_URL
+             value: 'https://nats-streaming-service:4222'
+            
+           - name:  CLIENT_ID
+             valueFrom:
+               fieldRef:
+                 fieldPath: metadata.name
+                 
+           - name: STRIPE_SECRET_KEY
+             valueFrom:
+               secretKeyRef:
+                  name: stripe-secret-key
+                  key: stripe_secret_key
+
+
+           - name: JWTAUTH
+             valueFrom:
+               secretKeyRef:
+                 name: jwt-secret
+                 key: jwt
+---
+
+apiVersion: v1
+kind: Service 
+metadata:
+  name:  payment-service
+spec:
+  selector:
+     app: payment-deployment
+  ports:
+  - name:  payment-port
+    port:  9000
+    targetPort: 9000
+    protocol: TCP

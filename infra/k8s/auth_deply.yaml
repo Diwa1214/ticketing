@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: authdeply
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      type: auth
+  template:
+    metadata:
+      labels:
+        type: auth
+    spec:
+      containers:
+      - name: authcontainer
+        image: diwa1214/dev:authimage
+        env:
+          - name: JWTAUTH
+            valueFrom:
+              secretKeyRef:
+                name: jwt-secret
+                key: jwt
+          
