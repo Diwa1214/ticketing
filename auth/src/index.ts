@@ -23,7 +23,7 @@ app.use(cookieSession({
 }))
 
 app.get("/api/users/currentuser",(req,res)=>{
-   return res.send("Welcome to nginx")
+   return res.send("Welcome to nginxa")
 })
 
 app.use(SignInRouter)
