@@ -4,7 +4,8 @@
   "description": "Backend_for_ticket",
   "main": "index.js",
   "scripts": {
-    "start": "ts-node-dev src/index"
+    "start": "ts-node-dev src/index",
+    "start:ci": "ts-node-dev --exit-child src/index"
   },
   "author": "",
   "license": "ISC",
