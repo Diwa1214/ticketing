@@ -5,12 +5,6 @@ import { OrderCreatedListener } from "../nats/events/listener/order-created-list
 
 
 
-
-
-
-
-
-
 const startservice = async ()=>{
 
 

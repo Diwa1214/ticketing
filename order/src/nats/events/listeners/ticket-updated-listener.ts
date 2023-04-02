@@ -8,11 +8,10 @@ export class TicketUpdatedListener extends BaseListener<TicketUpdatedInterface> 
   queueGroupName = queueGroupName;
 
   async onMessage(data: TicketUpdatedInterface['data'], msg: Message) {
-    console.log(data,"data");
     
-    const ticket = await Ticket.findOne({ _id: data.id});
+    const ticket = await Ticket.findOne({ _id: data.id,version:data?.version - 1});
 
-    console.log(ticket,"ticket");
+    console.log(ticket,"ticket in order service in updatinf the ticket");
     
 
     if (!ticket) {

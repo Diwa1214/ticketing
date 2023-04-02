@@ -32,8 +32,7 @@ router.post('/api/order/create',
    
       // Make sure that this ticket is not already reserved
       const isReserved = await ticket.isReserved();
-      console.log(isReserved,req.currentUser,"isreserver")
-      console.log(req.currentUser?.id,"isreserver")
+   
 
       if (isReserved) {
         throw new BadRequest('Ticket is already reserved');
@@ -43,7 +42,6 @@ router.post('/api/order/create',
       const expiration = new Date();
       expiration.setSeconds(expiration.getSeconds() + EXPIRATION_WINDOW_SECONDS);
    
-      console.log("getting")
    
       // Build the order and save it to the database
       const order = await Order.buildOrder({
@@ -52,7 +50,6 @@ router.post('/api/order/create',
         expiresAt: expiration,
         ticket,
       });
-      console.log(order,"order");
       
       await order.save();
    

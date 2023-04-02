@@ -61,13 +61,15 @@ const startservice = async ()=>{
 
     await Nat.connect(connection)
 
+    new OrderCreatedListener(Nat.client).listen()
+    new OrderCancelledPublisher(Nat.client).listen()
+    
     Nat.client.on('close',()=>{
         console.log('Nats streaming server closed');
         process.exit()
     })
 
-    new OrderCreatedListener(Nat.client).listen()
-    new OrderCancelledPublisher(Nat.client).listen()
+   
 
     process.on("SIGINT",()=>{
         return Nat.client.close()

@@ -13,15 +13,15 @@ const AppComponent =  ({Component,pageProps,data})=>{
    )
 }
 
-AppComponent.getInitialProps = async(appCtx)=>{
-   // const client = BuildApi(appCtx.ctx.req)
-   // const {data} = await client.get("/api/users/current_user")
-   console.log(appCtx.ctx.req.headers,"data");
-   let pageProps =  {}
-   if(appCtx.Component.getInitialProps){
-     pageProps = await appCtx.Component.getInitialProps(appCtx.ctx)
-   }
-   return {pageProps}
-}
+// AppComponent.getInitialProps = async(appCtx)=>{
+//    // const client = BuildApi(appCtx.ctx.req)
+//    // const {data} = await client.get("/api/users/current_user")
+//    console.log(appCtx.ctx.req.headers,"index");
+//    let pageProps =  {}
+//    if(appCtx.Component.getInitialProps){
+//      pageProps = await appCtx.Component.getInitialProps(appCtx.ctx)
+//    }
+//    return {pageProps}
+// }
 
 export default AppComponent

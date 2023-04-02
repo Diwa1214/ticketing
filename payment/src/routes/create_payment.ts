@@ -1,6 +1,6 @@
 import express,{Request,Response} from "express"
 import {body} from "express-validator"
-import {currentUser,Auth,BadRequest} from "@dkpackage/common"
+import {currentUser,Auth,BadRequest, OrderStatusEnum} from "@dkpackage/common"
 import { Order } from "../model/order"
 import { stripe } from "../../stripe/stripe"
 
@@ -11,6 +11,7 @@ router.post("/api/payment/create", [
     body('token').notEmpty().withMessage("stripe is required"),
     body("orderId").notEmpty().withMessage("orderId is required")
 ], currentUser,Auth,async(req:Request,res:Response)=>{
+   try{
     let {orderId} =req.body
     // find the order in payment order model
 
@@ -18,19 +19,33 @@ router.post("/api/payment/create", [
         _id:orderId
     })
 
+    if(order?.userId !== req.currentUser?.id){
+        new BadRequest("you not authorize to order this ticket in payment service")
+    }
+
+    if(order?.status === OrderStatusEnum?.Cancelled){
+        throw new BadRequest("your order is expired to create a payment")
+    }
+
+
     if(!order){
        throw new BadRequest("order is not found in payment service")
     }
 
     let payment =  await stripe.paymentIntents.create({
-        amount: order?.ticketPrice,
+        amount: order.ticketPrice,
         currency:"inr",
-        payment_method_types:["card"],
-        receipt_email:"diwadev1214@gmail.com",
-        description:"Your order is successfull"
+        automatic_payment_methods: {enabled: true},
+
     })
 
+    
+
     res.status(201).send({"payment":payment})
+   }
+   catch(err){
+      console.log(err,"Err")
+   }
 
 })
 

@@ -54,5 +54,5 @@ spec:
   ports:
   - name:  payment-port
     port:  9000
-    targetPort: 9000
     protocol: TCP
+    targetPort: 9000

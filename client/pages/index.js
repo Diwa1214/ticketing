@@ -2,7 +2,6 @@ import BuildApi from "../api/build_api";
 
 
 const LandingPage =  function({data}){
-    console.log(data,"index")
 
     return (
         <div>

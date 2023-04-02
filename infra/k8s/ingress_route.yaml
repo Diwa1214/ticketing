@@ -26,7 +26,7 @@ spec:
                 name: ticket-service
                 port:
                   number: 5000
-          - path: /api/order?(.*)
+          - path: /api/order/?(.*)
             pathType: Prefix
             backend:
               service:
@@ -34,7 +34,7 @@ spec:
                 port:
                   number: 4000
                   
-          - path: /api/payment?(.*)
+          - path: /api/payment/?(.*)
             pathType: Prefix
             backend:
                service:

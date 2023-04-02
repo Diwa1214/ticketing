@@ -25,6 +25,10 @@ app.use(cookieSession({
 
 app.use(CreatePaymentRouter)
 
+app.get("/api/payment/demo",(req,res)=>{
+   return res.send("Hia payment service")
+})
+
 app.use(RequestErrorHandling)
 
 
@@ -56,7 +60,7 @@ const startservice = async ()=>{
 
     await Nat.connect(connection)
 
-    new OrderCreatedListener(Nat.client).listen()
+    // new OrderCreatedListener(Nat.client).listen()
 
     Nat.client.on('close',()=>{
         console.log('Nats streaming server closed');
@@ -73,7 +77,7 @@ const startservice = async ()=>{
     }).catch((err)=>{
           console.error(err)
     })
-    app.listen(5000,()=>{
+    app.listen(9000,()=>{
         console.log('payment service is Listening on port 9000!!!!')
     })
 }
